@@ -76,7 +76,7 @@ jobs:
     - name: Build on Windows_64
       if: startsWith(matrix.os, 'windows')
       run: |
-        cmake -G "Visual Studio 16 2019" -A x64 -B build64 -DCMAKE_INSTALL_PREFIX="dist64" -D64BIT=ON
+        cmake -G "Visual Studio 16 2019" -A x64 -B build64 -DCMAKE_INSTALL_PREFIX="dist64" -DUSE_VGUI=ON -D64BIT=ON
         msbuild -verbosity:normal /property:Configuration=Release /property:Platform=x64 build64/INSTALL.vcxproj
     - name: Build on Windows with vgui
       if: startsWith(matrix.os, 'windows')
