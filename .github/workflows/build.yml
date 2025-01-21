@@ -73,6 +73,11 @@ jobs:
       run: |
         cmake -G "Visual Studio 16 2019" -A Win32 -B build -DCMAKE_INSTALL_PREFIX="dist"
         msbuild -verbosity:normal /property:Configuration=Release build/INSTALL.vcxproj
+    - name: Build on Windows_64
+      if: startsWith(matrix.os, 'windows')
+      run: |
+        cmake -G "Visual Studio 16 2019" -A x64 -B build64 -DCMAKE_INSTALL_PREFIX="dist64" -D64BIT=ON
+        msbuild -verbosity:normal /property:Configuration=Release /property:Platform=x64 build64/INSTALL.vcxproj
     - name: Build on Windows with vgui
       if: startsWith(matrix.os, 'windows')
       run: |
@@ -87,6 +92,10 @@ jobs:
       shell: bash
       run: echo "gamedir=$(grep build/CMakeCache.txt -Ee 'GAMEDIR:STRING=[a-z]+' | cut -d '=' -f 2)" >> $GITHUB_OUTPUT
       id: extract_gamedir
+    - name: Extract gamedir64
+      shell: bash
+      run: echo "gamedir=$(grep build64/CMakeCache.txt -Ee 'GAMEDIR:STRING=[a-z]+' | cut -d '=' -f 2)" >> $GITHUB_OUTPUT
+      id: extract_gamedir64
     - name: Upload linux artifact
       if: startsWith(matrix.os, 'ubuntu') && matrix.cc == 'gcc'
       uses: actions/upload-artifact@v4
@@ -105,6 +114,12 @@ jobs:
       with:
         name: hlsdk-${{ steps.extract_branch.outputs.branch }}-windows
         path: dist/${{ steps.extract_gamedir.outputs.gamedir }}
+    - name: Upload windows artifact x64
+      if: startsWith(matrix.os, 'windows')
+      uses: actions/upload-artifact@v4
+      with:
+        name: hlsdk-${{ steps.extract_branch.outputs.branch }}-windows64
+        path: dist64/${{ steps.extract_gamedir.outputs.gamedir64 }}
     - name: Upload windows artifact with vgui
       if: startsWith(matrix.os, 'windows')
       uses: actions/upload-artifact@v4
