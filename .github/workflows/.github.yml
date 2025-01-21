@@ -20,6 +20,7 @@ jobs:
     env:
       CC: ${{ matrix.cc }}
       CXX: ${{ matrix.cxx }}
+      STEAMRT_SNAPSHOT: latest-steam-client-general-availability
     steps:
     - name: Checkout
       uses: actions/checkout@v4
