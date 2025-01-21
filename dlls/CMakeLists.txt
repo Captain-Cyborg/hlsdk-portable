@@ -112,6 +112,7 @@ set (SVDLL_SOURCES
 	music.cpp
 	nihilanth.cpp
 	nodes.cpp
+ 	observer.cpp
 	osprey.cpp
 	pathcorner.cpp
 	plane.cpp
