@@ -84,6 +84,11 @@ jobs:
       run: |
         cmake -G "Visual Studio 16 2019" -A Win32 -B build -DCMAKE_INSTALL_PREFIX="dist" -DUSE_VGUI=${{ github.event.inputs.usevgui }}
         msbuild -verbosity:normal /property:Configuration=${{ github.event.inputs.buildtype }} build/INSTALL.vcxproj
+    - name: Build on Windows_64
+      if: startsWith(matrix.os, 'windows')
+      run: |
+        cmake -G "Visual Studio 16 2019" -A x64 -B build -DCMAKE_INSTALL_PREFIX="dist64" -DUSE_VGUI=${{ github.event.inputs.usevgui }}
+        msbuild -verbosity:normal /property:Configuration=${{ github.event.inputs.buildtype }} build/INSTALL.vcxproj
 
     - name: Extract branch name
       shell: bash
