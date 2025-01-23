@@ -119,7 +119,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: hlsdk-${{ steps.extract_branch.outputs.branch }}-windows_x64
-        path: dist/${{ steps.extract_gamedir_x64.outputs.gamedir }}
+        path: dist/${{ steps.extract_gamedir.outputs.gamedir_x64 }}
     - name: Upload windows artifact with vgui
       if: startsWith(matrix.os, 'windows')
       uses: actions/upload-artifact@v4
