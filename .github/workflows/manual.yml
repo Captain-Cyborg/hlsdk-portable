@@ -84,6 +84,11 @@ jobs:
       run: |
         cmake -G "Visual Studio 16 2019" -A Win32 -B build -DCMAKE_INSTALL_PREFIX="dist" -DUSE_VGUI=${{ github.event.inputs.usevgui }}
         msbuild -verbosity:normal /property:Configuration=${{ github.event.inputs.buildtype }} build/INSTALL.vcxproj
+    - name: Build on Windows x64
+      if: startsWith(matrix.os, 'windows')
+      run: |
+        cmake -G "Visual Studio 16 2019" -A x64 -B build64 -DCMAKE_INSTALL_PREFIX="dist64" -DUSE_VGUI=${{ github.event.inputs.usevgui }}
+        msbuild -verbosity:normal /property:Configuration=${{ github.event.inputs.buildtype }} /property:Platform=x64 build/INSTALL.vcxproj
 
     - name: Extract branch name
       shell: bash
@@ -110,4 +115,11 @@ jobs:
       with:
         name: hlsdk-${{ steps.extract_branch.outputs.branch }}-windows
         path: dist/${{ steps.extract_gamedir.outputs.gamedir }}
+    - name: Upload windows x64 artifact
+      if: startsWith(matrix.os, 'windows')
+      uses: actions/upload-artifact@v4
+      with:
+        name: hlsdk-${{ steps.extract_branch.outputs.branch }}-windows_x64
+        path: dist64/${{ steps.extract_gamedir.outputs.gamedir }}
+
 
